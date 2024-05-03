@@ -1,9 +1,6 @@
 package com.example.Attendance.Tracker.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.*;
 import java.util.Calendar;
@@ -15,6 +12,7 @@ public class Attendance {
 
     @Id
     @Column(name = "id",updatable = false,nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "login",updatable = false,nullable = false)

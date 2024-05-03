@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
 
@@ -12,4 +14,9 @@ public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
             + "FROM Attendance e "
             + "WHERE e.dateid = ?1")
     int getMonthSummary(int dateid);
+
+
+    @Query("SELECT MAX(e.id) " +
+            "FROM Attendance e")
+    Long getLastEntry();
 }
