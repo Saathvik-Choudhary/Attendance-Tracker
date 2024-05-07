@@ -6,7 +6,6 @@ import com.example.Attendance.Tracker.percistence.AttendanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class AttendanceService {
                     new MonthSummary(
                             Date.from(currentMonth.atStartOfDay(ZoneId.of("UTC")).toInstant()),
                             attendanceRepository.getMonthSummary(currentMonth.getYear()*10000 +
-                                    currentMonth.getMonthValue()*100 + currentMonth.getDayOfMonth())));
+                                currentMonth.getMonthValue()*100 + currentMonth.getDayOfMonth())));
 
             currentMonth = currentMonth.minusMonths(1);
         }
@@ -49,7 +48,7 @@ public class AttendanceService {
 
         Pageable pageable = PageRequest.of(request.getPageNumber(),
                 pageSize,
-                Sort.by("dateOfExpense").descending() );
+                Sort.by("login").descending() );
 
         List<AttendanceSummary> attendanceSummaries = new ArrayList<>();
 
@@ -83,5 +82,22 @@ public class AttendanceService {
         attendance.setLogout(request.getLogOut());
 
         return new LogOutResponse();
+    }
+
+    public AttendanceCheckResponse checkLogInStatus(AttendanceCheckRequest request) {
+
+        Date requestDate=request.getCheckDate();
+
+        LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
+
+        Optional<Long> id = attendanceRepository.findByDateId(dateId);
+
+        if(id.isEmpty()) {
+            return new AttendanceCheckResponse(true);
+        }
+
+        return new AttendanceCheckResponse(false);
     }
 }

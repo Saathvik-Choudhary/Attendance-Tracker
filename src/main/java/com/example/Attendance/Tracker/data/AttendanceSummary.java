@@ -1,5 +1,6 @@
 package com.example.Attendance.Tracker.data;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Date;
 
@@ -9,9 +10,9 @@ public class AttendanceSummary {
 
     private final Date logOut;
 
-    private final Duration workingTime;
+    private final BigDecimal workingTime;
 
-    public AttendanceSummary(Date logIn, Date logOut, Duration workingTime) {
+    public AttendanceSummary(Date logIn, Date logOut, BigDecimal workingTime) {
         this.logIn = logIn;
         this.logOut = logOut;
         this.workingTime = workingTime;
@@ -40,7 +41,7 @@ public class AttendanceSummary {
      *
      * @return the total working time of the attendance
      */
-    public Duration getWorkingTime() {
+    public BigDecimal getWorkingTime() {
         return workingTime;
     }
 }

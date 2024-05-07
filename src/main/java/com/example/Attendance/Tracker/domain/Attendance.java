@@ -2,17 +2,21 @@ package com.example.Attendance.Tracker.domain;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.*;
-import java.util.Calendar;
 import java.util.Date;
 
 @Entity
 @Table(name = "attendance")
 public class Attendance {
 
+
+    @Column(name = "dateId")
+    private int dateId;
+
     @Id
     @Column(name = "id",updatable = false,nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "login",updatable = false,nullable = false)
@@ -21,13 +25,12 @@ public class Attendance {
     @Column(name = "logout",nullable = false)
     private Date logout;
 
-    @Column(name = "monthid",nullable = false,updatable = false)
-    private int dateId;
+    @Column(name = "workingHours")
+    private BigDecimal workingHours;
 
-    @Column(name = "workingHours",nullable = false)
-    private Duration workingHours;
 
-    private Attendance(){
+
+    Attendance(){
         super();
     }
 
@@ -85,7 +88,7 @@ public class Attendance {
      *
      * @return  the total number of working time in that particular login logout cycle
      */
-    public Duration getWorkingHours() {
+    public BigDecimal getWorkingHours() {
         return workingHours;
     }
 
@@ -107,6 +110,9 @@ public class Attendance {
     }
 
     public void setWorkingHours() {
-        Duration duration = Duration.between(login.toInstant(), logout.toInstant());
+        Duration duration= Duration.between(login.toInstant(), logout.toInstant());
+
+        this.workingHours = BigDecimal.valueOf(duration.toMillis());
+
     }
 }

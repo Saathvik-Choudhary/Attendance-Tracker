@@ -1,5 +1,6 @@
 package com.example.Attendance.Tracker.data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -9,10 +10,10 @@ public class MonthSummary {
 
     private final Date month;
 
-    private final int totalWorkingHours;
+    private final BigDecimal totalWorkingHours;
 
     public MonthSummary(final Date month,
-                        int totalWorknigHours) {
+                        BigDecimal totalWorknigHours) {
         this.totalWorkingHours = totalWorknigHours;
         this.month = month;
     }
@@ -31,7 +32,7 @@ public class MonthSummary {
      *
      * @return the total number of working hours in that month
      */
-    public int getTotalWorkingHours() {
+    public BigDecimal getTotalWorkingHours() {
         return totalWorkingHours;
     }
 
