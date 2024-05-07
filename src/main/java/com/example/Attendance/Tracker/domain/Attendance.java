@@ -25,8 +25,11 @@ public class Attendance {
     @Column(name = "logout",nullable = false)
     private Date logout;
 
-    @Column(name = "workingHours")
-    private BigDecimal workingHours;
+    /**
+     * The total working time is being stored in milliseconds
+     */
+    @Column(name = "workingTime")
+    private BigDecimal workingTime;
 
 
 
@@ -35,6 +38,7 @@ public class Attendance {
     }
 
     public Attendance(final Date login) {
+        this();
 
         Date logout = new Date(login.getTime());
         logout.setHours(23);
@@ -45,6 +49,7 @@ public class Attendance {
         setLogout(logout);
         setDateId(login);
         setWorkingHours();
+
     }
 
     /**
@@ -88,17 +93,10 @@ public class Attendance {
      *
      * @return  the total number of working time in that particular login logout cycle
      */
-    public BigDecimal getWorkingHours() {
-        return workingHours;
+    public BigDecimal getWorkingTime() {
+        return workingTime;
     }
 
-    public void setLogin(Date login) {
-        this.login = login;
-    }
-
-    public void setLogout(Date logout) {
-        this.logout = logout;
-    }
 
     public void setDateId(final Date login) {
 
@@ -109,10 +107,18 @@ public class Attendance {
         this.dateId=dateid;
     }
 
+    public void setLogin(Date login) {
+        this.login = login;
+    }
+
+    public void setLogout(Date logout) {
+        this.logout = logout;
+    }
+
     public void setWorkingHours() {
         Duration duration= Duration.between(login.toInstant(), logout.toInstant());
 
-        this.workingHours = BigDecimal.valueOf(duration.toMillis());
+        this.workingTime = BigDecimal.valueOf(duration.toMillis());
 
     }
 }

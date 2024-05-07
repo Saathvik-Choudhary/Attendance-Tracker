@@ -14,7 +14,7 @@ public class GetMonthWIseSummaryResponse extends Response {
         this.monthSummaries = new ArrayList<>();
     }
 
-    public void addMonthSummary(MonthSummary summary){
+    public void addMonthSummary(final MonthSummary summary){
         monthSummaries.add(summary);
     }
 

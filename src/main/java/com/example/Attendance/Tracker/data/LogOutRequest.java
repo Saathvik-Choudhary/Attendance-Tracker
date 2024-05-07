@@ -1,6 +1,7 @@
 package com.example.Attendance.Tracker.data;
 
 import com.example.Attendance.Tracker.common.Request;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Date;
 
@@ -8,6 +9,7 @@ public class LogOutRequest extends Request {
 
     private final Date logOut;
 
+    @JsonCreator
     public LogOutRequest(final Date logOut) {
         this.logOut = logOut;
     }

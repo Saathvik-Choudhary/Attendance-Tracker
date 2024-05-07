@@ -55,7 +55,7 @@ public class AttendanceService {
         for(Attendance attendance : attendanceRepository.findAll(pageable)){
             attendanceSummaries.add(new AttendanceSummary(attendance.getLogin(),
                     attendance.getLogout(),
-                    attendance.getWorkingHours()));
+                    attendance.getWorkingTime()));
         }
 
         final long totalCount = attendanceRepository.count();
@@ -92,11 +92,36 @@ public class AttendanceService {
 
         int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
 
-        Optional<Long> id = attendanceRepository.findByDateId(dateId);
+        Optional<Integer> id = attendanceRepository.findByDateId(dateId);
 
         if(id.isEmpty()) {
             return new AttendanceCheckResponse(true);
         }
+
+        return new AttendanceCheckResponse(false);
+    }
+
+    public AttendanceCheckResponse checkLogOutStatus(AttendanceCheckRequest request) {
+
+        Date requestDate=request.getCheckDate();
+
+        LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
+
+        Optional<Integer> id = attendanceRepository.findByDateId(dateId);
+
+        if(id.isEmpty()) {
+            return new AttendanceCheckResponse(false);
+        }
+
+        Date logoutTime=attendanceRepository.getLogout(dateId);
+
+        if(requestDate.before(logoutTime))
+        {
+            return new AttendanceCheckResponse(true);
+        }
+
 
         return new AttendanceCheckResponse(false);
     }

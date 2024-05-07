@@ -13,8 +13,8 @@ public class MonthSummary {
     private final BigDecimal totalWorkingHours;
 
     public MonthSummary(final Date month,
-                        BigDecimal totalWorknigHours) {
-        this.totalWorkingHours = totalWorknigHours;
+                        final BigDecimal totalWorkingTime) {
+        this.totalWorkingHours = totalWorkingTime;
         this.month = month;
     }
 

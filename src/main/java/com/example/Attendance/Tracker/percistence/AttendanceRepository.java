@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
 
 
-    @Query( "SELECT SUM(e.workingHours) " +
+    @Query( "SELECT SUM(e.workingTime) " +
             "FROM Attendance e " +
             "WHERE e.dateId/100 = ?1/100")
     BigDecimal getMonthSummary(int monthId);
@@ -22,8 +23,13 @@ public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
     Long getLastEntry();
 
 
-    @Query( "SELECT a.id " +
+    @Query( "SELECT a.dateId " +
             "FROM Attendance a " +
             "WHERE a.dateId = ?1")
-    Optional<Long> findByDateId(int dateId);
+    Optional<Integer> findByDateId(int dateId);
+
+    @Query("SELECT a.logout " +
+            "FROM Attendance a " +
+            "WHERE a.dateId = ?1")
+    Date getLogout(int dateId);
 }

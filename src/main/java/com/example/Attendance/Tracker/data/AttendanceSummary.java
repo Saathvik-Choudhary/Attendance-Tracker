@@ -12,7 +12,9 @@ public class AttendanceSummary {
 
     private final BigDecimal workingTime;
 
-    public AttendanceSummary(Date logIn, Date logOut, BigDecimal workingTime) {
+    public AttendanceSummary(final Date logIn,
+                             final Date logOut,
+                             final BigDecimal workingTime) {
         this.logIn = logIn;
         this.logOut = logOut;
         this.workingTime = workingTime;
