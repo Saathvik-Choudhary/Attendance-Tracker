@@ -75,11 +75,15 @@ public class AttendanceService {
     }
 
     public LogOutResponse HandleLogOut(final LogOutRequest request){
-        Long id= attendanceRepository.getLastEntry();
+        Date requestDate=request.getLogOut();
 
-        Attendance attendance=attendanceRepository.getReferenceById(id);
+        LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        attendance.setLogout(request.getLogOut());
+        int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
+
+        Optional<Integer> id= attendanceRepository.findByDateId(dateId);
+
+
 
         return new LogOutResponse();
     }

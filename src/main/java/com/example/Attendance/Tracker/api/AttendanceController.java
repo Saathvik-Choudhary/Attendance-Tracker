@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/attendance")
 public class AttendanceController {
+
     @Autowired
     AttendanceService attendanceService;
 
@@ -29,21 +30,18 @@ public class AttendanceController {
     @CrossOrigin
     @GetMapping("/checkLogin")
     public ResponseEntity<AttendanceCheckResponse> getLogInStatus(@RequestBody AttendanceCheckRequest request){
-
         return ResponseEntity.ok(attendanceService.checkLogInStatus(request));
     }
 
     @CrossOrigin
     @GetMapping("/checkLogOut")
     public ResponseEntity<AttendanceCheckResponse> getLogOutStatus(@RequestBody AttendanceCheckRequest request){
-
         return ResponseEntity.ok(attendanceService.checkLogOutStatus(request));
     }
 
     @CrossOrigin
     @PutMapping("/logIn")
     public ResponseEntity<LogInResponse> putLogIn(@RequestBody LogInRequest request){
-
         return ResponseEntity.ok(attendanceService.HandleLogIn(request));
     }
 

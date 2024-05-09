@@ -1,7 +1,6 @@
 package com.example.Attendance.Tracker.domain;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.Date;
@@ -33,12 +32,12 @@ public class Attendance {
 
 
 
-    Attendance(){
+    Attendance(Attendance attendance){
         super();
     }
 
     public Attendance(final Date login) {
-        this();
+        this(attendance.get());
 
         Date logout = new Date(login.getTime());
         logout.setHours(23);
