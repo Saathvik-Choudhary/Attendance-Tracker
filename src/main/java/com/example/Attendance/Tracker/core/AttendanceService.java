@@ -6,8 +6,8 @@ import com.example.Attendance.Tracker.percistence.AttendanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.time.ZoneId;
+
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,8 +54,8 @@ public class AttendanceService {
 
         for(Attendance attendance : attendanceRepository.findAll(pageable)){
             attendanceSummaries.add(new AttendanceSummary(attendance.getLogin(),
-                    attendance.getLogout(),
-                    attendance.getWorkingTime()));
+                                    attendance.getLogout(),
+                                    attendance.getWorkingTime()));
         }
 
         final long totalCount = attendanceRepository.count();
@@ -65,32 +65,48 @@ public class AttendanceService {
     }
 
     public LogInResponse HandleLogIn(final LogInRequest request){
-        Attendance attendance=new Attendance(request.getLogIn());
 
-        attendance= attendanceRepository.save(attendance);
+        if(checkLogInStatus(new AttendanceCheckRequest()).getStatus()){
+            ZoneOffset zoneOffset = request.getZoneOffset();
 
-        LogInResponse response=new LogInResponse(attendance.getLogin());
+            LocalDateTime localDateTime = LocalDateTime.now();
+            LocalDateTime endOfDay = localDateTime.withHour(23).withMinute(59).withSecond(59);
+            OffsetDateTime offsetDateTime = endOfDay.atOffset(zoneOffset);
+
+            Date logout = Date.from(offsetDateTime.toInstant());
+
+            Attendance attendance=new Attendance(new Date(),logout);
+            attendance= attendanceRepository.save(attendance);
+            LogInResponse response=new LogInResponse(attendance.getLogin());
+            response.setMessage("The login has been recorded");
+            return response;
+        }
+
+        LogInResponse response=new LogInResponse(new Date());
+        response.addError("The login could not be saved because a login already exists in the system.");
 
         return response;
     }
 
     public LogOutResponse HandleLogOut(final LogOutRequest request){
-        Date requestDate=request.getLogOut();
+        if(checkLogOutStatus(new AttendanceCheckRequest()).getStatus()) {
+            Date requestDate = new Date();
+            LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
+            Attendance attendance = attendanceRepository.findAttendanceByDateId(dateId);
+            attendance.setLogout(requestDate);
+            attendanceRepository.save(attendance);
+        }
 
-        LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LogOutResponse response=new LogOutResponse();
+        response.setMessage("Logout has been Recorded");
 
-        int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
-
-        Optional<Integer> id= attendanceRepository.findByDateId(dateId);
-
-
-
-        return new LogOutResponse();
+        return response;
     }
 
     public AttendanceCheckResponse checkLogInStatus(AttendanceCheckRequest request) {
 
-        Date requestDate=request.getCheckDate();
+        Date requestDate=new Date();
 
         LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -107,12 +123,9 @@ public class AttendanceService {
 
     public AttendanceCheckResponse checkLogOutStatus(AttendanceCheckRequest request) {
 
-        Date requestDate=request.getCheckDate();
-
+        Date requestDate = new Date();
         LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
         int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
-
         Optional<Integer> id = attendanceRepository.findByDateId(dateId);
 
         if(id.isEmpty()) {
@@ -121,11 +134,9 @@ public class AttendanceService {
 
         Date logoutTime=attendanceRepository.getLogout(dateId);
 
-        if(requestDate.before(logoutTime))
-        {
+        if(requestDate.before(logoutTime)) {
             return new AttendanceCheckResponse(true);
         }
-
 
         return new AttendanceCheckResponse(false);
     }

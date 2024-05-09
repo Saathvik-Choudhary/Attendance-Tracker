@@ -1,5 +1,6 @@
 package com.example.Attendance.Tracker.percistence;
 
+import com.example.Attendance.Tracker.core.AttendanceService;
 import com.example.Attendance.Tracker.domain.Attendance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,8 +19,7 @@ public class AttendancePopulator implements CommandLineRunner {
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-
+        sdf.setTimeZone(TimeZone.getTimeZone("MIT"));
         final var attendances = Arrays.asList(new Attendance(sdf.parse("2024-01-05 09:30:00")),
                 new Attendance(sdf.parse("2024-01-03 09:30:00")),
                 new Attendance(sdf.parse("2024-01-06 09:30:00")),
@@ -55,16 +55,16 @@ public class AttendancePopulator implements CommandLineRunner {
                 new Attendance(sdf.parse("2024-04-19 09:30:00")),
                 new Attendance(sdf.parse("2024-04-23 10:30:00")),
                 new Attendance(sdf.parse("2024-04-26 09:30:00")),
-                new Attendance(sdf.parse("2024-04-30 10:30:00")),
-                new Attendance(sdf.parse("2024-05-03 09:30:00")),
-                new Attendance(sdf.parse("2024-05-07 09:30:00")),
-                new Attendance(sdf.parse("2024-05-10 10:30:00")),
-                new Attendance(sdf.parse("2024-05-14 09:30:00")),
-                new Attendance(sdf.parse("2024-05-17 10:30:00")),
-                new Attendance(sdf.parse("2024-05-21 09:30:00")),
-                new Attendance(sdf.parse("2024-05-24 10:30:00")),
-                new Attendance(sdf.parse("2024-05-28 09:30:00")),
-                new Attendance(sdf.parse("2024-05-31 10:30:00")));
+                new Attendance(sdf.parse("2024-04-30 10:30:00")));
+//                new Attendance(sdf.parse("2024-05-03 09:30:00")),
+//                new Attendance(sdf.parse("2024-05-07 09:30:00")),
+//                new Attendance(sdf.parse("2024-05-10 10:30:00")),
+//                new Attendance(sdf.parse("2024-05-14 09:30:00")),
+//                new Attendance(sdf.parse("2024-05-17 10:30:00")),
+//                new Attendance(sdf.parse("2024-05-21 09:30:00")),
+//                new Attendance(sdf.parse("2024-05-24 10:30:00")),
+//                new Attendance(sdf.parse("2024-05-28 09:30:00")),
+//                new Attendance(sdf.parse("2024-05-31 10:30:00")));
 
         attendanceRepository.saveAll(attendances);
     }

@@ -29,13 +29,13 @@ public class AttendanceController {
 
     @CrossOrigin
     @GetMapping("/checkLogin")
-    public ResponseEntity<AttendanceCheckResponse> getLogInStatus(@RequestBody AttendanceCheckRequest request){
+    public ResponseEntity<AttendanceCheckResponse> getLogInStatus(AttendanceCheckRequest request){
         return ResponseEntity.ok(attendanceService.checkLogInStatus(request));
     }
 
     @CrossOrigin
     @GetMapping("/checkLogOut")
-    public ResponseEntity<AttendanceCheckResponse> getLogOutStatus(@RequestBody AttendanceCheckRequest request){
+    public ResponseEntity<AttendanceCheckResponse> getLogOutStatus(AttendanceCheckRequest request){
         return ResponseEntity.ok(attendanceService.checkLogOutStatus(request));
     }
 
@@ -47,7 +47,7 @@ public class AttendanceController {
 
     @CrossOrigin
     @PutMapping("/logOut")
-    public ResponseEntity<LogOutResponse> putLogIn(@RequestBody LogOutRequest request){
+    public ResponseEntity<LogOutResponse> putLogOut(@RequestBody LogOutRequest request){
         return ResponseEntity.ok(attendanceService.HandleLogOut(request));
     }
 }

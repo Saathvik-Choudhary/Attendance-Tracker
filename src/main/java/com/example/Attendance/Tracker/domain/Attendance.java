@@ -32,17 +32,13 @@ public class Attendance {
 
 
 
-    Attendance(Attendance attendance){
+    Attendance(){
         super();
     }
 
-    public Attendance(final Date login) {
-        this(attendance.get());
-
-        Date logout = new Date(login.getTime());
-        logout.setHours(23);
-        logout.setMinutes(59);
-        logout.setSeconds(59);
+    public Attendance(final Date login,
+                      final Date logout) {
+        this();
 
         setLogin(login);
         setLogout(logout);
@@ -107,17 +103,38 @@ public class Attendance {
     }
 
     public void setLogin(Date login) {
-        this.login = login;
+
+        this.login = (Date) login.clone();
     }
 
-    public void setLogout(Date logout) {
-        this.logout = logout;
+
+    public void setLogout(final Date logout) {
+        this.logout= (Date) logout.clone();
+        setWorkingHours();
+        System.out.println(logout);
     }
 
     public void setWorkingHours() {
         Duration duration= Duration.between(login.toInstant(), logout.toInstant());
 
         this.workingTime = BigDecimal.valueOf(duration.toMillis());
+
+    }
+
+
+    public Attendance(final Date login) {
+        this();
+
+        Date logout= (Date) login.clone();
+        logout.setHours(23);
+        logout.setMinutes(59);
+        logout.setSeconds(59);
+
+        this.logout = logout;
+
+        setLogin(login);
+        setDateId(login);
+        setWorkingHours();
 
     }
 }

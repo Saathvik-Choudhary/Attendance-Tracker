@@ -3,23 +3,20 @@ package com.example.Attendance.Tracker.data;
 import com.example.Attendance.Tracker.common.Request;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 public class LogInRequest extends Request {
 
-    private final Date logIn;
+    private final ZoneOffset zoneOffset;
 
     @JsonCreator
-    public LogInRequest(final Date logIn) {
-        this.logIn = logIn;
+    public LogInRequest(ZoneOffset zoneOffset) {
+        this.zoneOffset = zoneOffset;
     }
 
-    /**
-     * Get the login time of the attendance
-     *
-     * @return the login time of the attendance
-     */
-    public Date getLogIn() {
-        return logIn;
+    public ZoneOffset getZoneOffset() {
+        return zoneOffset;
     }
 }
