@@ -12,33 +12,51 @@ import java.util.Optional;
 @Repository
 public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
 
-
+    /**
+     * Get the total number of working hours in that particular month.
+     *
+     * @param monthId is the month being sent in the format of (int)yyyyMMdd.
+     *
+     * @return the total number of working hours in a particular month in BigDecimal milliseconds.
+     */
     @Query( "SELECT SUM(e.workingTime) " +
             "FROM Attendance e " +
             "WHERE e.dateId/100 = ?1/100")
     BigDecimal getMonthSummary(int monthId);
 
-    @Query( "SELECT MAX(e.id) " +
-            "FROM Attendance e")
-    Long getLastEntry();
-
-
-    @Query( "SELECT a.dateId " +
-            "FROM Attendance a " +
-            "WHERE a.dateId = ?1")
-    Optional<Integer> findByDateId(int dateId);
-
+    /**
+     * Finds the attendance object in the repo based on the input dateId.
+     *
+     * @param dateId is the month being sent in the format of (int)yyyyMMdd.
+     *
+     * @return the attendance object based on the input dateId.
+     */
     @Query( "SELECT a " +
             "FROM Attendance a " +
             "WHERE a.dateId = ?1")
     Attendance findAttendanceByDateId(int dateId);
 
+    /**
+     * Get the logout time for the give dateId.
+     *
+     * @param dateId is the month being sent in the format of (int)yyyyMMdd.
+     *
+     * @return the logout time for the give dateId.
+     */
     @Query("SELECT a.logout " +
             "FROM Attendance a " +
             "WHERE a.dateId = ?1")
     Date getLogout(int dateId);
 
-    @Override
-    @Query("SELECT a FROM Attendance a WHERE a.id=?1 ")
-    Attendance getById(Long id);
+    /**
+     * Finds and returns the id for the given date id.
+     *
+     * @param dateId is the month being sent in the format of (int)yyyyMMdd.
+     *
+     * @return the optional id of the searched attendance object.
+     */
+    @Query( "SELECT a.dateId " +
+            "FROM Attendance a " +
+            "WHERE a.dateId = ?1")
+    Optional<Integer> findByDateId(int dateId);
 }
