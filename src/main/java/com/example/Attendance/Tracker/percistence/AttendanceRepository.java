@@ -19,7 +19,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
      *
      * @return the total number of working hours in a particular month in BigDecimal milliseconds.
      */
-    @Query( "SELECT SUM(e.working_time) " +
+    @Query( "SELECT SUM(e.workingTime) " +
             "FROM Attendance e " +
             "WHERE e.dateId/100 = ?1/100")
     BigDecimal getMonthSummary(int monthId);

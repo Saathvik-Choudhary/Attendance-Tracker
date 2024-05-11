@@ -35,7 +35,7 @@ public class Attendance {
     /**
      * The total working time is being stored in milliseconds
      */
-    @Column(name = "working_time")
+    @Column(name = "workingTime")
     @NotBlank(message = "Working time is mandatory.")
     @NotNull(message = "Working time is mandatory.")
     private BigDecimal workingTime;

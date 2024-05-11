@@ -62,7 +62,7 @@ public class AttendanceService {
         return new GetAllAttendanceResponse(page);
     }
 
-    public LogInResponse HandleLogIn(final LogInRequest request){
+    public LogInResponse handleLogIn(final LogInRequest request){
 
         if(checkLogInStatus(new AttendanceCheckRequest()).getStatus()){
             ZoneOffset zoneOffset = request.getZoneOffset();
@@ -84,7 +84,7 @@ public class AttendanceService {
         return response;
     }
 
-    public LogOutResponse HandleLogOut(final LogOutRequest request){
+    public LogOutResponse handleLogOut(final LogOutRequest request){
         if(checkLogOutStatus(new AttendanceCheckRequest()).getStatus()) {
             Date requestDate = new Date();
             LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

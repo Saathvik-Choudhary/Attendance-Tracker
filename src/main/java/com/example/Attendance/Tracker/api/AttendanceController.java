@@ -29,25 +29,25 @@ public class AttendanceController {
 
     @CrossOrigin
     @GetMapping("/checkLogin")
-    public ResponseEntity<AttendanceCheckResponse> getLogInStatus(AttendanceCheckRequest request){
+    public ResponseEntity<AttendanceCheckResponse> getLogInStatus(final AttendanceCheckRequest request){
         return ResponseEntity.ok(attendanceService.checkLogInStatus(request));
     }
 
     @CrossOrigin
     @GetMapping("/checkLogOut")
-    public ResponseEntity<AttendanceCheckResponse> getLogOutStatus(AttendanceCheckRequest request){
+    public ResponseEntity<AttendanceCheckResponse> getLogOutStatus(final AttendanceCheckRequest request){
         return ResponseEntity.ok(attendanceService.checkLogOutStatus(request));
     }
 
     @CrossOrigin
     @PutMapping("/logIn")
-    public ResponseEntity<LogInResponse> putLogIn(@RequestBody LogInRequest request){
-        return ResponseEntity.ok(attendanceService.HandleLogIn(request));
+    public ResponseEntity<LogInResponse> putLogIn(@RequestBody final LogInRequest request){
+        return ResponseEntity.ok(attendanceService.handleLogIn(request));
     }
 
     @CrossOrigin
     @PutMapping("/logOut")
-    public ResponseEntity<LogOutResponse> putLogOut(@RequestBody LogOutRequest request){
-        return ResponseEntity.ok(attendanceService.HandleLogOut(request));
+    public ResponseEntity<LogOutResponse> putLogOut(@RequestBody final LogOutRequest request){
+        return ResponseEntity.ok(attendanceService.handleLogOut(request));
     }
 }
