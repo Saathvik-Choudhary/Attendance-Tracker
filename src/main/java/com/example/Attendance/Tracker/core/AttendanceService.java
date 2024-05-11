@@ -19,22 +19,20 @@ public class AttendanceService {
     @Autowired
     AttendanceRepository attendanceRepository;
 
-    public GetMonthWIseSummaryResponse getSummary(final GetMonthWiseSummaryRequest request){
-
+    public GetMonthWIseSummaryResponse getSummary(final GetMonthWiseSummaryRequest request) {
         Date originalDate = new Date();
-
         LocalDate localDate = originalDate.toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
-
         LocalDate currentMonth = localDate.withDayOfMonth(1);
+        GetMonthWIseSummaryResponse response = new GetMonthWIseSummaryResponse();
 
-        GetMonthWIseSummaryResponse response=new GetMonthWIseSummaryResponse();
-
-        for(int i=0;i<request.getNumberOfMonths();i++){
+        for (int i = 0; i < request.getNumberOfMonths(); i++) {
             response.addMonthSummary(
                     new MonthSummary(
                             Date.from(currentMonth.atStartOfDay(ZoneId.of("UTC")).toInstant()),
-                            attendanceRepository.getMonthSummary(currentMonth.getYear()*10000 +
-                                currentMonth.getMonthValue()*100 + currentMonth.getDayOfMonth())));
+                            attendanceRepository.getMonthSummary(
+                                    currentMonth.getYear() * 10000 +
+                                            currentMonth.getMonthValue() * 100 +
+                                            currentMonth.getDayOfMonth())));
 
             currentMonth = currentMonth.minusMonths(1);
         }
@@ -68,11 +66,9 @@ public class AttendanceService {
 
         if(checkLogInStatus(new AttendanceCheckRequest()).getStatus()){
             ZoneOffset zoneOffset = request.getZoneOffset();
-
             LocalDateTime localDateTime = LocalDateTime.now();
             LocalDateTime endOfDay = localDateTime.withHour(23).withMinute(59).withSecond(59);
             OffsetDateTime offsetDateTime = endOfDay.atOffset(zoneOffset);
-
             Date logout = Date.from(offsetDateTime.toInstant());
 
             Attendance attendance=new Attendance(new Date(),logout);
@@ -104,14 +100,11 @@ public class AttendanceService {
         return response;
     }
 
-    public AttendanceCheckResponse checkLogInStatus(AttendanceCheckRequest request) {
+    public AttendanceCheckResponse checkLogInStatus(final AttendanceCheckRequest request) {
 
         Date requestDate=new Date();
-
         LocalDate localDate = requestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
         int dateId=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
-
         Optional<Integer> id = attendanceRepository.findByDateId(dateId);
 
         if(id.isEmpty()) {
@@ -137,7 +130,6 @@ public class AttendanceService {
         if(requestDate.before(logoutTime)) {
             return new AttendanceCheckResponse(true);
         }
-
         return new AttendanceCheckResponse(false);
     }
 }

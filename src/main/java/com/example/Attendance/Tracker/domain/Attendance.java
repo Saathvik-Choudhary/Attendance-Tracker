@@ -35,7 +35,7 @@ public class Attendance {
     /**
      * The total working time is being stored in milliseconds
      */
-    @Column(name = "workingTime")
+    @Column(name = "working_time")
     @NotBlank(message = "Working time is mandatory.")
     @NotNull(message = "Working time is mandatory.")
     private BigDecimal workingTime;
@@ -61,7 +61,6 @@ public class Attendance {
         setLogout(logout);
         setDateId(login);
         setWorkingHours();
-
     }
 
     /**
@@ -79,7 +78,7 @@ public class Attendance {
      * @return the login time of the attendance
      */
     public Date getLogin() {
-        return login;
+        return (Date) login.clone();
     }
 
     /**
@@ -88,7 +87,7 @@ public class Attendance {
      * @return the logout time of the attendance
      */
     public Date getLogout() {
-        return logout;
+        return (Date) logout.clone();
     }
 
     /**
@@ -114,12 +113,12 @@ public class Attendance {
 
         LocalDate localDate = login.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        int dateid=localDate.getYear()*10000 + localDate.getMonthValue()*100 + localDate.getDayOfMonth();
-
-        this.dateId=dateid;
+        this.dateId = (localDate.getYear() * 10000) +
+                      (localDate.getMonthValue() * 100) +
+                      localDate.getDayOfMonth();
     }
 
-    public void setLogin(Date login) {
+    public void setLogin(final Date login) {
         if (login != null) {
             this.login = (Date) login.clone();
         } else {
@@ -154,6 +153,7 @@ public class Attendance {
     }
 
 
+    /**     😅😅😅😅     */
     public Attendance(final Date login) {
         this();
 
